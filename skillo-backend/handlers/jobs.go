@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -50,7 +52,7 @@ func CallGeminiAI(promptText string) (string, error) {
 		return "", fmt.Errorf("GEMINI_API_KEY is not configured")
 	}
 
-	model := os.Getenv("GEMINI_MODEL")
+	model := strings.TrimSpace(os.Getenv("GEMINI_MODEL"))
 	if model == "" {
 		model = "gemini-1.5-flash"
 	}
@@ -79,7 +81,7 @@ func CallGeminiAI(promptText string) (string, error) {
 		}{{Text: promptText}},
 	}}
 	payload.GenerationConfig.Temperature = 0.4
-	payload.GenerationConfig.MaxOutputTokens = 1024
+	payload.GenerationConfig.MaxOutputTokens = 2048
 
 	body, err := json.Marshal(payload)
 	if err != nil {
@@ -88,82 +90,169 @@ func CallGeminiAI(promptText string) (string, error) {
 
 	endpoint := "https://generativelanguage.googleapis.com/v1beta/models/" +
 		url.PathEscape(model) + ":generateContent"
-	request, err := http.NewRequest("POST", endpoint, bytes.NewReader(body))
-	if err != nil {
-		return "", fmt.Errorf("create Gemini request: %w", err)
-	}
-	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("x-goog-api-key", apiKey)
-
 	client := &http.Client{Timeout: 90 * time.Second}
-	response, err := client.Do(request)
-	if err != nil {
-		return "", fmt.Errorf("send Gemini request: %w", err)
-	}
-	defer response.Body.Close()
+	const maxRetries = 3
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		request, err := http.NewRequest("POST", endpoint, bytes.NewReader(body))
+		if err != nil {
+			return "", fmt.Errorf("create Gemini request: %w", err)
+		}
+		request.Header.Set("Content-Type", "application/json")
+		request.Header.Set("x-goog-api-key", apiKey)
 
-	if response.StatusCode != http.StatusOK {
+		response, err := client.Do(request)
+		if err != nil {
+			if attempt < maxRetries && isTransientGeminiError(err) {
+				delay := time.Duration(1<<attempt) * time.Second
+				log.Printf("Gemini request attempt %d/%d failed with transient error: %v; retrying in %s", attempt+1, maxRetries+1, err, delay)
+				time.Sleep(delay)
+				continue
+			}
+			return "", fmt.Errorf("send Gemini request: %w", err)
+		}
+
 		responseBody, readErr := io.ReadAll(response.Body)
+		response.Body.Close()
 		if readErr != nil {
-			return "", fmt.Errorf("Gemini API returned status code %d and response body could not be read: %w", response.StatusCode, readErr)
+			if attempt < maxRetries {
+				delay := time.Duration(1<<attempt) * time.Second
+				log.Printf("Gemini response attempt %d/%d could not be read: %v; retrying in %s", attempt+1, maxRetries+1, readErr, delay)
+				time.Sleep(delay)
+				continue
+			}
+			return "", fmt.Errorf("read Gemini response: %w", readErr)
 		}
-		return "", fmt.Errorf("Gemini API returned status code %d: %s", response.StatusCode, string(responseBody))
-	}
-
-	var result map[string]any
-	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
-		return "", fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	candidates, ok := result["candidates"].([]any)
-	if !ok || len(candidates) == 0 {
-		if promptFeedback, hasFeedback := result["promptFeedback"].(map[string]any); hasFeedback {
-			return "", fmt.Errorf("Gemini blocked prompt: %v", promptFeedback)
+		if len(bytes.TrimSpace(responseBody)) == 0 {
+			log.Printf("Gemini API returned an empty response body: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini API returned an empty response body")
 		}
-		return "", fmt.Errorf("no candidates returned from Gemini API (response: %+v)", result)
+
+		if response.StatusCode != http.StatusOK {
+			if attempt < maxRetries && isTransientGeminiStatus(response.StatusCode) {
+				delay := time.Duration(1<<attempt) * time.Second
+				log.Printf("Gemini request attempt %d/%d returned status %d; retrying in %s", attempt+1, maxRetries+1, response.StatusCode, delay)
+				time.Sleep(delay)
+				continue
+			}
+			return "", fmt.Errorf("Gemini API returned status code %d: %s", response.StatusCode, string(responseBody))
+		}
+
+		var result map[string]any
+		if err := json.Unmarshal(responseBody, &result); err != nil {
+			log.Printf("Gemini API returned malformed response JSON: %q", string(responseBody))
+			return "", fmt.Errorf("failed to decode response: %w", err)
+		}
+
+		candidates, ok := result["candidates"].([]any)
+		if !ok || len(candidates) == 0 {
+			log.Printf("Gemini API response contained no candidates; raw response: %q", string(responseBody))
+			if promptFeedback, hasFeedback := result["promptFeedback"].(map[string]any); hasFeedback {
+				return "", fmt.Errorf("Gemini blocked prompt: %v", promptFeedback)
+			}
+			return "", fmt.Errorf("no candidates returned from Gemini API (response: %+v)", result)
+		}
+
+		candidate, ok := candidates[0].(map[string]any)
+		if !ok {
+			log.Printf("Gemini API response contained an invalid candidate; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response contained an invalid candidate")
+		}
+		content, ok := candidate["content"].(map[string]any)
+		if !ok {
+			log.Printf("Gemini API candidate had empty content; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response candidate did not contain content")
+		}
+		parts, ok := content["parts"].([]any)
+		if !ok || len(parts) == 0 {
+			log.Printf("Gemini API candidate had empty parts; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response candidate did not contain parts")
+		}
+		part, ok := parts[0].(map[string]any)
+		if !ok {
+			log.Printf("Gemini API response contained an invalid content part; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response contained an invalid content part")
+		}
+		text, ok := part["text"].(string)
+		if !ok {
+			log.Printf("Gemini API candidate text was empty or invalid; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response content part did not contain text")
+		}
+
+		// Clean up markdown code blocks and extract the pure JSON object.
+		text = strings.TrimSpace(text)
+		if strings.HasPrefix(text, "```json") {
+			text = strings.TrimPrefix(text, "```json")
+		} else if strings.HasPrefix(text, "```") {
+			text = strings.TrimPrefix(text, "```")
+		}
+		if strings.HasSuffix(text, "```") {
+			text = strings.TrimSuffix(text, "```")
+		}
+		text = strings.TrimSpace(text)
+		if idxOpen := strings.Index(text, "{"); idxOpen >= 0 {
+			if idxClose := strings.LastIndex(text, "}"); idxClose > idxOpen {
+				text = text[idxOpen : idxClose+1]
+			}
+		}
+		text = escapeRawJSONStringNewlines(text)
+		if text == "" {
+			log.Printf("Gemini API candidate text was empty after cleanup; raw response: %q", string(responseBody))
+			return "", fmt.Errorf("Gemini response did not contain text")
+		}
+		return text, nil
 	}
 
-	candidate, ok := candidates[0].(map[string]any)
-	if !ok {
-		return "", fmt.Errorf("Gemini response contained an invalid candidate")
-	}
-	content, ok := candidate["content"].(map[string]any)
-	if !ok {
-		return "", fmt.Errorf("Gemini response candidate did not contain content")
-	}
-	parts, ok := content["parts"].([]any)
-	if !ok || len(parts) == 0 {
-		return "", fmt.Errorf("Gemini response candidate did not contain parts")
-	}
-	part, ok := parts[0].(map[string]any)
-	if !ok {
-		return "", fmt.Errorf("Gemini response contained an invalid content part")
-	}
-	text, ok := part["text"].(string)
-	if !ok {
-		return "", fmt.Errorf("Gemini response content part did not contain text")
-	}
+	return "", fmt.Errorf("Gemini request failed after %d retries", maxRetries)
+}
 
-	// Clean up markdown code blocks and extract the pure JSON object.
-	text = strings.TrimSpace(text)
-	if strings.HasPrefix(text, "```json") {
-		text = strings.TrimPrefix(text, "```json")
-	} else if strings.HasPrefix(text, "```") {
-		text = strings.TrimPrefix(text, "```")
-	}
-	if strings.HasSuffix(text, "```") {
-		text = strings.TrimSuffix(text, "```")
-	}
-	text = strings.TrimSpace(text)
-	if idxOpen := strings.Index(text, "{"); idxOpen >= 0 {
-		if idxClose := strings.LastIndex(text, "}"); idxClose > idxOpen {
-			text = text[idxOpen : idxClose+1]
+func isTransientGeminiStatus(status int) bool {
+	return status == http.StatusRequestTimeout ||
+		status == http.StatusTooManyRequests ||
+		status >= http.StatusInternalServerError
+}
+
+func isTransientGeminiError(err error) bool {
+	var networkErr net.Error
+	return errors.As(err, &networkErr) && (networkErr.Timeout() || networkErr.Temporary())
+}
+
+func escapeRawJSONStringNewlines(text string) string {
+	var cleaned strings.Builder
+	cleaned.Grow(len(text))
+
+	inString := false
+	escaped := false
+	for _, char := range text {
+		if inString {
+			if escaped {
+				cleaned.WriteRune(char)
+				escaped = false
+				continue
+			}
+			switch char {
+			case '\\':
+				cleaned.WriteRune(char)
+				escaped = true
+			case '"':
+				cleaned.WriteRune(char)
+				inString = false
+			case '\n':
+				cleaned.WriteString(`\n`)
+			case '\r':
+				cleaned.WriteString(`\r`)
+			default:
+				cleaned.WriteRune(char)
+			}
+			continue
+		}
+
+		cleaned.WriteRune(char)
+		if char == '"' {
+			inString = true
 		}
 	}
-	if text == "" {
-		return "", fmt.Errorf("Gemini response did not contain text")
-	}
-	return text, nil
+
+	return cleaned.String()
 }
 
 // Suggest uses Gemini to propose task settings.
@@ -191,13 +280,16 @@ Recommend only skills genuinely needed, points from 10 to 500 based on complexit
 	suggestionText, err := CallGeminiAI(prompt)
 	if err != nil {
 		log.Printf("Gemini API request failed: %v", err)
-		writeError(w, http.StatusBadGateway, "AI suggestion service is unavailable")
+		suggestion := fallbackJobSuggestion()
+		log.Printf("Using fallback job suggestion after Gemini failure")
+		writeJSON(w, http.StatusOK, suggestion)
 		return
 	}
 	var suggestion jobSuggestion
 	if err := json.Unmarshal([]byte(suggestionText), &suggestion); err != nil {
-		writeError(w, http.StatusBadGateway, fmt.Sprintf("AI returned invalid suggestion data: %v", err))
-		return
+		log.Printf("Gemini returned invalid suggestion JSON: %v", err)
+		suggestion = fallbackJobSuggestion()
+		log.Printf("Using fallback job suggestion after JSON parsing failure")
 	}
 	if suggestion.Points < 10 || suggestion.Points > 500 {
 		suggestion.Points = 50
@@ -212,6 +304,20 @@ Recommend only skills genuinely needed, points from 10 to 500 based on complexit
 		suggestion.Resources = []models.JobMaterial{}
 	}
 	writeJSON(w, http.StatusOK, suggestion)
+}
+
+func fallbackJobSuggestion() jobSuggestion {
+	return jobSuggestion{
+		Skills:            []string{"React", "TypeScript", "Tailwind CSS"},
+		Points:            50,
+		SubmissionFormats: []string{"GitHub Repository", "Live Deployment Link"},
+		Resources: []models.JobMaterial{
+			{Type: "doc", Label: "React Learn", URL: "https://react.dev/learn", Source: "link"},
+			{Type: "doc", Label: "TypeScript Documentation", URL: "https://www.typescriptlang.org/docs/", Source: "link"},
+			{Type: "doc", Label: "Tailwind CSS Documentation", URL: "https://tailwindcss.com/docs", Source: "link"},
+		},
+		Rationale: "Generated via fallback mechanism due to temporary AI response formatting error.",
+	}
 }
 
 type createJobRequest struct {

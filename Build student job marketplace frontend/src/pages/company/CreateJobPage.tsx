@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ArrowLeft, Plus, X, Sparkles, CheckSquare, BookOpen, Globe, FileText, Upload, Link, Cloud } from "lucide-react";
 import CompanySidebar from "../../components/CompanySidebar";
 import { AppState, JobMaterial } from "../../App";
@@ -68,19 +68,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
     }
   };
 
-  useEffect(() => {
-    if (description.trim().length < 40) {
-      setSuggestion(null);
-      setSuggestionError("");
-      return;
-    }
-    const timer = window.setTimeout(() => {
-      void generateSuggestions();
-    }, 900);
-    return () => window.clearTimeout(timer);
-  }, [title, category, description, materials]);
-
-  /* Keep the automatic suggestions, but expose the same operation as a button. */
+  /* Suggestions are requested only when the user clicks the button. */
   const requestSuggestions = () => {
     void generateSuggestions();
   };
