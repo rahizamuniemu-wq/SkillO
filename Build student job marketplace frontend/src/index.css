@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --color-primary: #896558;
+  --color-primary-dark: #5c4039;
+  --color-primary-light: #b08070;
+  --color-accent: #c4a882;
+  --color-accent-light: #ede0d0;
+  --color-surface: #faf8f6;
+  --color-border-warm: #e8ddd7;
+  --color-text-muted: #7a6560;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a1210;
+  --card: #faf8f6;
+  --card-foreground: #1a1210;
+  --primary: #896558;
+  --primary-foreground: #ffffff;
+  --secondary: #ede0d0;
+  --secondary-foreground: #5c4039;
+  --muted: #f5f0ec;
+  --muted-foreground: #7a6560;
+  --accent: #c4a882;
+  --accent-foreground: #3d2a22;
+  --border: #e8ddd7;
+  --ring: #896558;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: 'DM Serif Display', serif;
+}

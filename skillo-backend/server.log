@@ -1,0 +1,9 @@
+panic: required environment variable "DATABASE_URL" is not set
+
+goroutine 1 [running]:
+github.com/skillo/backend/config.requireEnv({0x7ff67702aea7, 0xc})
+	C:/Users/LENOVO/Downloads/Build student job marketplace frontend/skillo-backend/config/config.go:111 +0x88
+github.com/skillo/backend/config.Load()
+	C:/Users/LENOVO/Downloads/Build student job marketplace frontend/skillo-backend/config/config.go:60 +0x8e
+main.main()
+	C:/Users/LENOVO/Downloads/Build student job marketplace frontend/skillo-backend/main.go:24 +0x39
