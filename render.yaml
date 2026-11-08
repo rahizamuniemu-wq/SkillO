@@ -3,6 +3,7 @@ services:
   - name: skillo-backend
     type: web
     runtime: docker
+    plan: free
     dockerfilePath: ./skillo-backend/Dockerfile
     dockerContext: ./skillo-backend
     healthCheckPath: /api/health
