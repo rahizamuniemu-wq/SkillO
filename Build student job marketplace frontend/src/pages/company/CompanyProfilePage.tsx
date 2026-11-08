@@ -93,13 +93,13 @@ export default function CompanyProfilePage({ state }: { state: AppState }) {
 
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarFile} />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-display text-3xl text-[#1a1210] mb-7">Company Profile</h1>
+          <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210] mb-7">Company Profile</h1>
 
           {/* Hero card */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8ddd7] shadow-sm mb-5">
-            <div className="flex items-start gap-5">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-5">
               {/* Avatar */}
               <div className="relative flex-shrink-0 group cursor-pointer" onClick={handleAvatarClick}>
                 {avatarUrl ? (
@@ -146,7 +146,7 @@ export default function CompanyProfilePage({ state }: { state: AppState }) {
               </div>
 
               <button onClick={openEdit}
-                className="px-4 py-2 border border-[#e8ddd7] text-[#7a6560] text-xs font-semibold rounded-xl hover:bg-[#f8f6f3] transition-colors">
+                className="px-4 py-2 border border-[#e8ddd7] text-[#7a6560] text-xs font-semibold rounded-xl hover:bg-[#f8f6f3] transition-colors self-start sm:self-auto">
                 Edit Profile
               </button>
             </div>
@@ -160,7 +160,7 @@ export default function CompanyProfilePage({ state }: { state: AppState }) {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-3 mb-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
             {[
               { label: "Active Tasks",     value: activeJobs.toString() },
               { label: "Completed Tasks",  value: closedJobs.toString() },
@@ -216,9 +216,9 @@ export default function CompanyProfilePage({ state }: { state: AppState }) {
 
       {/* Edit Modal */}
       {editOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setEditOpen(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md border border-[#e8ddd7] z-10">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-[#e8ddd7] z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#f5f0ec]">
               <h2 className="font-semibold text-[#1a1210]">Edit Company Profile</h2>
               <button onClick={() => setEditOpen(false)} className="w-8 h-8 rounded-lg hover:bg-[#f5f0ec] flex items-center justify-center text-[#7a6560]">

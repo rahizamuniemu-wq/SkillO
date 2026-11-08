@@ -164,7 +164,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
     return (
       <div className="flex min-h-screen bg-[#f8f6f3]">
         <CompanySidebar state={state} active="company-create-job" />
-        <main className="flex-1 flex items-center justify-center p-8">
+        <main className="flex-1 pt-14 lg:pt-0 flex items-center justify-center p-4 sm:p-8">
           <div className="text-center max-w-sm">
             <div className="w-20 h-20 rounded-full bg-[#ede0d0] flex items-center justify-center mx-auto mb-6">
               <CheckSquare size={34} className="text-[#896558]" />
@@ -193,13 +193,13 @@ export default function CreateJobPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <CompanySidebar state={state} active="company-create-job" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-2xl mx-auto">
           <button onClick={() => state.navigate("company-dashboard")} className="flex items-center gap-1.5 text-sm text-[#7a6560] hover:text-[#896558] mb-6 transition-colors">
             <ArrowLeft size={15} /> Back to Dashboard
           </button>
 
-          <h1 className="font-display text-3xl text-[#1a1210] mb-1">Post a New Task</h1>
+          <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210] mb-1">Post a New Task</h1>
           <p className="text-[#7a6560] text-sm mb-7">Define requirements, attach learning resources, and set your slot limit.</p>
 
           {errors.length > 0 && (
@@ -214,7 +214,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
               <Field label="Task Title *">
                 <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="e.g. Build a Dashboard UI Component" className="w-full px-4 py-3 rounded-xl border border-[#e8ddd7] text-sm focus:outline-none focus:border-[#896558] transition-colors" />
               </Field>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Category">
                   <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-[#e8ddd7] text-sm focus:outline-none focus:border-[#896558] transition-colors bg-white">
                     {categories.map((c) => <option key={c}>{c}</option>)}
@@ -230,7 +230,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
                 <textarea value={description} onChange={(e) => setDesc(e.target.value)} rows={4} placeholder="Describe the deliverables, technical requirements, and acceptance criteria..." className="w-full px-4 py-3 rounded-xl border border-[#e8ddd7] text-sm focus:outline-none focus:border-[#896558] transition-colors resize-none" />
               </Field>
               <div className="bg-[#ede0d0] border border-[#c4a882] rounded-xl p-4 space-y-3">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <Sparkles size={16} className="text-[#896558]" />
                     <p className="text-sm font-semibold text-[#5c4039]">AI task suggestions</p>
@@ -286,7 +286,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
 
             {/* Slots & Timeline */}
             <Card title="Slots & Timeline">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Submission Deadline *">
                   <input value={deadline} onChange={(e) => setDeadline(e.target.value)} type="date" className="w-full px-4 py-3 rounded-xl border border-[#e8ddd7] text-sm focus:outline-none focus:border-[#896558] transition-colors bg-white" />
                 </Field>
@@ -317,7 +317,7 @@ export default function CreateJobPage({ state }: { state: AppState }) {
 
             {/* Reward */}
             <Card title="Reward Structure">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Cash Reward for Winner (Tk) *">
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-[#7a6560]">Tk</span>

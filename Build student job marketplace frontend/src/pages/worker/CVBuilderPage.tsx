@@ -357,11 +357,11 @@ export default function CVBuilderPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <WorkerSidebar state={state} active="worker-cv" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-7">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
             <div>
-              <h1 className="font-display text-3xl text-[#1a1210]">AI CV Builder</h1>
+              <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210]">AI CV Builder</h1>
               <p className="text-[#7a6560] text-sm mt-1">Generate a professional resume from your verified SkillO experience</p>
             </div>
             <button
@@ -440,8 +440,8 @@ export default function CVBuilderPage({ state }: { state: AppState }) {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl border border-[#e8ddd7] shadow-sm overflow-hidden">
                 {/* CV Header */}
-                <div className="bg-[#1a1210] px-8 py-7 text-white">
-                  <h2 className="font-display text-3xl">{fullName}</h2>
+                <div className="bg-[#1a1210] px-5 sm:px-8 py-6 sm:py-7 text-white">
+                  <h2 className="font-display text-2xl sm:text-3xl">{fullName}</h2>
                   {allSkills.length > 0 && (
                     <p className="text-white/60 text-sm mt-0.5">
                       {allSkills[0]}{allSkills[1] ? ` · ${allSkills[1]}` : ""}
@@ -458,7 +458,7 @@ export default function CVBuilderPage({ state }: { state: AppState }) {
                   </div>
                 </div>
 
-                <div className="p-8 space-y-7">
+                <div className="p-5 sm:p-8 space-y-6 sm:space-y-7">
                   {/* Professional Summary */}
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-widest text-[#896558] pb-2 border-b border-[#f5f0ec] mb-3">

@@ -110,7 +110,7 @@ export default function LandingPage({ state }: { state: AppState }) {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-end">
             <div className="pb-16 lg:pb-24">
-              <h1 className="font-display text-5xl lg:text-6xl xl:text-7xl text-[#1a1210] leading-[1.05] mb-6">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-[#1a1210] leading-[1.05] mb-6">
                 Build skills.<br />Earn proof.<br />
                 <em className="text-[#896558] not-italic">Get hired.</em>
               </h1>
@@ -134,7 +134,7 @@ export default function LandingPage({ state }: { state: AppState }) {
                   Post Tasks as a Company
                 </button>
               </div>
-              <div className="flex items-center gap-6 mt-8 text-xs text-[#7a6560]">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8 text-xs text-[#7a6560]">
                 {["Free to join", "Verified CV entries", "Real company tasks"].map((t) => (
                   <span key={t} className="flex items-center gap-1.5">
                     <CheckCircle2 size={13} className="text-[#896558]" />{t}
@@ -182,7 +182,7 @@ export default function LandingPage({ state }: { state: AppState }) {
       </section>
 
       {/* ── Stats ── */}
-      <section className="py-10 border-y border-[#e8ddd7] bg-[#faf8f6]">
+      <section className="py-8 sm:py-10 border-y border-[#e8ddd7] bg-[#faf8f6]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x divide-[#e8ddd7]">
             {[
@@ -201,7 +201,7 @@ export default function LandingPage({ state }: { state: AppState }) {
       </section>
 
       {/* ── How it works ── */}
-      <section id="how-it-works" className="py-24 px-6 lg:px-10" style={{ scrollMarginTop: "64px" }}>
+      <section id="how-it-works" className="py-14 sm:py-24 px-6 lg:px-10" style={{ scrollMarginTop: "64px" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-xs font-bold tracking-widest uppercase text-[#896558] mb-3">Two sides, one platform</p>
@@ -294,7 +294,7 @@ export default function LandingPage({ state }: { state: AppState }) {
       </section>
 
       {/* ── AI Spotlight ── */}
-      <section className="py-24 px-6 lg:px-10">
+      <section className="py-14 sm:py-24 px-6 lg:px-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -363,9 +363,9 @@ export default function LandingPage({ state }: { state: AppState }) {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="py-20 px-6 lg:px-10">
+      <section className="py-12 sm:py-20 px-6 lg:px-10">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-[#1a1210] rounded-3xl px-10 py-14 text-center relative overflow-hidden">
+          <div className="bg-[#1a1210] rounded-3xl px-6 sm:px-10 py-10 sm:py-14 text-center relative overflow-hidden">
             <div className="absolute inset-0 opacity-10" style={{ background: "radial-gradient(circle at 30% 50%, #896558 0%, transparent 60%), radial-gradient(circle at 70% 50%, #c4a882 0%, transparent 60%)" }} />
             <div className="relative">
               <p className="text-xs font-bold tracking-widest uppercase text-[#c4a882] mb-4">Start today, free</p>

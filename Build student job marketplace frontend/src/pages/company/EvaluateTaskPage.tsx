@@ -19,7 +19,7 @@ function WorkerCard({ worker }: { worker: api.ApiWorkerProfile }) {
       <p className="text-xs font-semibold text-[#7a6560] uppercase tracking-wider mb-2 flex items-center gap-1.5">
         <User size={11} /> Student Profile
       </p>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 mb-2">
         <div><p className="text-[#7a6560] text-xs">Email</p><p className="text-[#1a1210] font-medium text-xs truncate">{worker.email}</p></div>
         {worker.university && <div><p className="text-[#7a6560] text-xs">University</p><p className="text-[#1a1210] font-medium text-xs">{worker.university}</p></div>}
         {worker.department && <div><p className="text-[#7a6560] text-xs">Department</p><p className="text-[#1a1210] font-medium text-xs">{worker.department}</p></div>}
@@ -122,7 +122,7 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
     return (
       <div className="flex min-h-screen bg-[#f8f6f3]">
         <CompanySidebar state={state} active="company-evaluate" />
-        <main className="flex-1 flex items-center justify-center p-8">
+        <main className="flex-1 pt-14 lg:pt-0 flex items-center justify-center p-4 sm:p-8">
           <div className="text-center max-w-sm">
             <div className="w-20 h-20 rounded-full bg-[#ede0d0] flex items-center justify-center mx-auto mb-6">
               <Trophy size={36} className="text-[#896558]" />
@@ -160,7 +160,7 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
     return (
       <div className="flex min-h-screen bg-[#f8f6f3]">
         <CompanySidebar state={state} active="company-evaluate" />
-        <main className="flex-1 flex items-center justify-center p-8">
+        <main className="flex-1 pt-14 lg:pt-0 flex items-center justify-center p-4 sm:p-8">
           <div className="text-center max-w-sm">
             <div className="w-16 h-16 rounded-2xl bg-[#ede0d0] flex items-center justify-center mx-auto mb-5">
               <Inbox size={28} className="text-[#896558]" />
@@ -186,7 +186,7 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <CompanySidebar state={state} active="company-evaluate" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => state.navigate("company-dashboard")}
@@ -227,7 +227,7 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
 
           {/* Info banner */}
           {selectedJob && (
-            <div className="bg-[#1a1210] rounded-2xl p-4 mb-6 flex items-center gap-4">
+            <div className="bg-[#1a1210] rounded-2xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
               <Sparkles size={20} className="text-[#c4a882] flex-shrink-0" />
               <div className="flex-1">
                 <p className="text-white font-semibold text-sm">{selectedJob.title}</p>
@@ -310,7 +310,7 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
                     )}
 
                     {/* Points + feedback inputs */}
-                    <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                       <div>
                         <label className="text-xs font-semibold text-[#7a6560] uppercase tracking-wider block mb-1">
                           Skill Points
@@ -399,9 +399,9 @@ export default function EvaluateTaskPage({ state }: { state: AppState }) {
 
       {/* ── Reject Modal ──────────────────────────────────────────────────────── */}
       {rejectTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => !rejectLoading && setRejectTarget(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm border border-[#e8ddd7] z-10">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm border border-[#e8ddd7] z-10 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#f5f0ec]">
               <h2 className="font-semibold text-[#1a1210]">Reject Submission</h2>
               <button onClick={() => setRejectTarget(null)} disabled={rejectLoading}

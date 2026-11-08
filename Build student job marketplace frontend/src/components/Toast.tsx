@@ -35,13 +35,13 @@ export default function ToastContainer() {
   _setToasts = setToasts;
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2.5 pointer-events-none">
+    <div className="fixed bottom-4 sm:bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-[9999] flex flex-col items-stretch sm:items-end gap-2.5 pointer-events-none">
       {toasts.map((t) => {
         const Icon = icons[t.type];
         return (
           <div
             key={t.id}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg text-sm font-medium max-w-sm pointer-events-auto animate-in ${styles[t.type]}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg text-sm font-medium w-full sm:w-auto sm:max-w-sm pointer-events-auto animate-in ${styles[t.type]}`}
             style={{ animation: "slideUp 0.25s ease" }}
           >
             <Icon size={16} className={`flex-shrink-0 ${iconStyles[t.type]}`} />

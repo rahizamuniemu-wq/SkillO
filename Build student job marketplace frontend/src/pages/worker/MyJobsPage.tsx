@@ -137,13 +137,13 @@ export default function MyJobsPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <WorkerSidebar state={state} active="worker-my-jobs" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-display text-3xl text-[#1a1210] mb-1">My Tasks</h1>
+          <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210] mb-1">My Tasks</h1>
           <p className="text-[#7a6560] text-sm mb-7">Track active tasks, submit work, and view company feedback.</p>
 
           {bookedJobs.length === 0 ? (
-            <div className="bg-white rounded-2xl p-14 border border-[#e8ddd7] text-center">
+            <div className="bg-white rounded-2xl p-10 sm:p-14 border border-[#e8ddd7] text-center">
               <div className="w-14 h-14 rounded-2xl bg-[#ede0d0] flex items-center justify-center mx-auto mb-4">
                 <Bookmark size={26} className="text-[#896558]" />
               </div>
@@ -179,7 +179,7 @@ export default function MyJobsPage({ state }: { state: AppState }) {
                 return (
                   <div key={job.id} className="bg-white rounded-2xl border border-[#e8ddd7] shadow-sm overflow-hidden">
                     <div className="p-5">
-                      <div className="flex items-start justify-between gap-4">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2.5 mb-1 flex-wrap">
                             <h3 className="font-semibold text-[#1a1210]">{job.title}</h3>
@@ -200,7 +200,7 @@ export default function MyJobsPage({ state }: { state: AppState }) {
                             </div>
                           )}
                         </div>
-                        <div className="text-right flex-shrink-0">
+                        <div className="text-left sm:text-right flex-shrink-0">
                           <p className="font-display text-2xl text-[#896558]">Tk {job.reward.toLocaleString()}</p>
                           <p className="text-xs text-[#7a6560]">reward</p>
                           <p className="text-xs text-[#896558] font-semibold mt-0.5">+{job.points} pts</p>

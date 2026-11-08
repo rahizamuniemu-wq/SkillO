@@ -56,7 +56,7 @@ function VerifyScreen({ email, state }: { email: string; state: AppState }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex items-center justify-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl bg-[#896558] flex items-center justify-center">
@@ -64,7 +64,7 @@ function VerifyScreen({ email, state }: { email: string; state: AppState }) {
           </div>
           <span className="font-display text-2xl text-white">SkillO</span>
         </div>
-        <div className="bg-white/5 border border-white/10 p-8 shadow-xl rounded-2xl backdrop-blur-sm">
+        <div className="bg-white/5 border border-white/10 p-5 sm:p-8 shadow-xl rounded-2xl backdrop-blur-sm">
           <div className="flex flex-col items-center mb-8">
             <div className="w-16 h-16 rounded-2xl bg-[#896558]/20 border border-[#896558]/30 flex items-center justify-center mb-4">
               <Mail size={28} className="text-[#896558]" />
@@ -85,17 +85,16 @@ function VerifyScreen({ email, state }: { email: string; state: AppState }) {
             </div>
           )}
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-2 justify-center mb-6">
+            <div className="flex gap-1.5 sm:gap-2 justify-center mb-6">
               {digits.map((d, i) => (
                 <input key={i} ref={(el) => { inputRefs.current[i] = el; }}
                   type="text" inputMode="numeric" maxLength={6} value={d}
                   onChange={(e) => handleDigit(i, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(i, e)}
                   onFocus={(e) => e.target.select()}
-                  className={`w-11 text-center text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all
+                  className={`w-9 sm:w-11 h-12 sm:h-[52px] text-center text-lg sm:text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all
                     ${d ? "border-[#896558] bg-[#896558]/10" : "border-white/15 focus:border-[#896558]"}
                     ${error ? "border-red-500/50" : ""}`}
-                  style={{ height: "52px" }}
                   aria-label={`Digit ${i + 1}`}
                 />
               ))}
@@ -193,7 +192,7 @@ function ForgotPasswordFlow({ onBack }: { onBack: () => void }) {
   const stepLabel = ["Enter your email", "Check your email", "Set new password"][step - 1];
 
   return (
-    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <button onClick={onBack} className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-6 text-sm transition-colors">
           <ArrowLeft size={16} /> Back to Sign In
@@ -211,7 +210,7 @@ function ForgotPasswordFlow({ onBack }: { onBack: () => void }) {
           ))}
         </div>
 
-        <div className="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
+        <div className="bg-white/5 border border-white/10 p-5 sm:p-8 rounded-2xl shadow-xl">
           {success ? (
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
@@ -257,17 +256,16 @@ function ForgotPasswordFlow({ onBack }: { onBack: () => void }) {
                       We sent a 6-digit code to<br /><span className="text-white font-medium">{email}</span>
                     </p>
                   </div>
-                  <div className="flex gap-2 justify-center mb-6">
+                  <div className="flex gap-1.5 sm:gap-2 justify-center mb-6">
                     {digits.map((d, i) => (
                       <input key={i} ref={(el) => { inputRefs.current[i] = el; }}
                         type="text" inputMode="numeric" maxLength={6} value={d}
                         onChange={(e) => handleDigit(i, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(i, e)}
                         onFocus={(e) => e.target.select()}
-                        className={`w-11 text-center text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all
+                        className={`w-9 sm:w-11 h-12 sm:h-[52px] text-center text-lg sm:text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all
                           ${d ? "border-[#896558] bg-[#896558]/10" : "border-white/15 focus:border-[#896558]"}
                           ${error ? "border-red-500/50" : ""}`}
-                        style={{ height: "52px" }}
                         aria-label={`Digit ${i + 1}`}
                       />
                     ))}
@@ -365,7 +363,7 @@ export default function AuthPage({ state }: { state: AppState }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#1a1210] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <button onClick={() => state.navigate("landing")}
           className="inline-flex items-center gap-2 text-white/50 hover:text-white mb-6 text-sm transition-colors">
@@ -396,7 +394,7 @@ export default function AuthPage({ state }: { state: AppState }) {
       </div>
 
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white/5 border border-white/10 p-8 shadow-xl rounded-2xl backdrop-blur-sm">
+        <div className="bg-white/5 border border-white/10 p-5 sm:p-8 shadow-xl rounded-2xl backdrop-blur-sm">
           {error && (
             <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 text-xs">
               <AlertCircle size={16} className="flex-shrink-0" /><span>{error}</span>
@@ -453,7 +451,7 @@ export default function AuthPage({ state }: { state: AppState }) {
                   <input required type="text" name="university" placeholder="e.g. Dhaka University" value={formData.university} onChange={handleChange}
                     className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#896558]" />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-white/70 mb-1">Batch</label>
                     <input required type="text" name="batch" placeholder="e.g. 20th" value={formData.batch} onChange={handleChange}

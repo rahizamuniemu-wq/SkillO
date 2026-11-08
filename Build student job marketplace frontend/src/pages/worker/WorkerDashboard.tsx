@@ -43,15 +43,15 @@ export default function WorkerDashboard({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <WorkerSidebar state={state} active="worker-dashboard" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-4xl mx-auto">
           <div className="mb-7">
-            <h1 className="font-display text-3xl text-[#1a1210]">Browse Tasks</h1>
+            <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210]">Browse Tasks</h1>
             <p className="text-[#7a6560] text-sm mt-1">Find a task, book your slot, start building real experience.</p>
           </div>
 
           {/* Quick stats */}
-          <div className="grid grid-cols-3 gap-4 mb-7">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-7">
             {[
               { label: "Open Tasks",  value: openCount.toString(),  sub: "Slots available", icon: Filter },
               { label: "Your Points", value: userPoints.toString(),  sub: userPoints > 0 ? "Keep earning" : "Start a task to earn", icon: Star },
@@ -115,7 +115,7 @@ export default function WorkerDashboard({ state }: { state: AppState }) {
                       isFull || isBooked ? "opacity-60" : "hover:border-[#c4a882] hover:shadow-md cursor-pointer"
                     }`}
                   >
-                    <div className="flex items-start gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="text-xs font-semibold text-[#896558] bg-[#ede0d0] px-2 py-0.5 rounded-full">{job.category}</span>
@@ -124,7 +124,7 @@ export default function WorkerDashboard({ state }: { state: AppState }) {
                           {isBooked && <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Booked ✓</span>}
                         </div>
                         <h3 className="font-semibold text-[#1a1210] mt-1.5 mb-0.5">{job.title}</h3>
-                        <p className="text-sm text-[#7a6560] flex items-center gap-3 mb-3">
+                        <p className="text-sm text-[#7a6560] flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
                           <span>{job.companyName}</span>
                           <span className="flex items-center gap-1"><Clock size={12} /> Due {job.deadline}</span>
                         </p>
@@ -143,7 +143,7 @@ export default function WorkerDashboard({ state }: { state: AppState }) {
                         </div>
                       </div>
 
-                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                      <div className="flex sm:flex-col items-end gap-2 w-full sm:w-auto sm:flex-shrink-0">
                         <div className="text-right">
                           <p className="font-display text-2xl text-[#896558]">Tk {job.reward.toLocaleString()}</p>
                           <p className="text-xs text-[#7a6560]">top reward</p>

@@ -19,7 +19,7 @@ function WorkerCard({ worker }: { worker: api.ApiWorkerProfile }) {
       <p className="text-xs font-semibold text-[#7a6560] uppercase tracking-wider mb-2 flex items-center gap-1.5">
         <User size={11} /> Student Profile
       </p>
-      <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm mb-2">
         <div><span className="text-[#7a6560] text-xs">Email</span><p className="text-[#1a1210] font-medium text-xs">{worker.email}</p></div>
         {worker.university && <div><span className="text-[#7a6560] text-xs">University</span><p className="text-[#1a1210] font-medium text-xs">{worker.university}</p></div>}
         {worker.department && <div><span className="text-[#7a6560] text-xs">Department</span><p className="text-[#1a1210] font-medium text-xs">{worker.department}</p></div>}
@@ -80,7 +80,7 @@ export default function SubmissionsPage({ state }: { state: AppState }) {
     return (
       <div className="flex min-h-screen bg-[#f8f6f3]">
         <CompanySidebar state={state} active="company-submissions" />
-        <main className="flex-1 flex items-center justify-center p-8">
+        <main className="flex-1 pt-14 lg:pt-0 flex items-center justify-center p-4 sm:p-8">
           <div className="text-center max-w-sm">
             <div className="w-16 h-16 rounded-2xl bg-[#ede0d0] flex items-center justify-center mx-auto mb-5">
               <Inbox size={28} className="text-[#896558]" />
@@ -104,7 +104,7 @@ export default function SubmissionsPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <CompanySidebar state={state} active="company-submissions" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-4xl mx-auto">
           <button onClick={() => state.navigate("company-dashboard")}
             className="flex items-center gap-1.5 text-sm text-[#7a6560] hover:text-[#896558] mb-6 transition-colors">
@@ -127,9 +127,9 @@ export default function SubmissionsPage({ state }: { state: AppState }) {
             </div>
           )}
 
-          <div className="flex items-start justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-6">
             <div>
-              <h1 className="font-display text-3xl text-[#1a1210]">Submissions Review</h1>
+              <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210]">Submissions Review</h1>
               <p className="text-[#7a6560] text-sm mt-1">
                 {selectedJob?.title ?? "—"} · {visibleSubs.length} submission{visibleSubs.length !== 1 ? "s" : ""}
               </p>
@@ -142,7 +142,7 @@ export default function SubmissionsPage({ state }: { state: AppState }) {
 
           {/* Banner: all slots accepted → go to Evaluate Task */}
           {allSlotsAccepted && selectedJob?.status !== "closed" && (
-            <div className="mb-5 flex items-center justify-between gap-4 bg-[#1a1210] rounded-2xl px-5 py-4">
+            <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-[#1a1210] rounded-2xl px-5 py-4">
               <div className="flex items-center gap-3">
                 <CheckCircle size={18} className="text-emerald-400 flex-shrink-0" />
                 <div>
@@ -268,9 +268,9 @@ export default function SubmissionsPage({ state }: { state: AppState }) {
 
       {/* ── Review Modal ──────────────────────────────────────────────────────── */}
       {reviewTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => !reviewLoading && setReviewTarget(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm border border-[#e8ddd7] z-10">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto border border-[#e8ddd7] z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#f5f0ec]">
               <h2 className="font-semibold text-[#1a1210]">
                 {reviewTarget.verdict === "accepted" ? "Accept Submission" : "Reject Submission"}

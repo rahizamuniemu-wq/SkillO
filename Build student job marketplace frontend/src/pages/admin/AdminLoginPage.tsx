@@ -62,7 +62,7 @@ function AdminForgotPassword({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0e0d] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0f0e0d] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <button onClick={onBack} className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-6 text-sm transition-colors">
           <ArrowLeft size={16} /> Back to Admin Login
@@ -76,7 +76,7 @@ function AdminForgotPassword({ onBack }: { onBack: () => void }) {
         <div className="flex justify-center gap-2 mb-8 mt-4">
           {[1,2,3].map((s) => <div key={s} className={`h-1 w-10 rounded-full transition-all ${s <= step ? "bg-[#896558]" : "bg-white/10"}`} />)}
         </div>
-        <div className="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
+        <div className="bg-white/5 border border-white/10 p-5 sm:p-8 rounded-2xl shadow-xl">
           {success ? (
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
@@ -111,12 +111,12 @@ function AdminForgotPassword({ onBack }: { onBack: () => void }) {
                     </div>
                     <p className="text-white/50 text-sm text-center">Code sent to<br /><span className="text-white font-medium">{email}</span></p>
                   </div>
-                  <div className="flex gap-2 justify-center mb-6">
+                  <div className="flex gap-1.5 sm:gap-2 justify-center mb-6">
                     {digits.map((d, i) => (
                       <input key={i} ref={(el) => { inputRefs.current[i] = el; }} type="text" inputMode="numeric" maxLength={6} value={d}
                         onChange={(e) => handleDigit(i, e.target.value)} onKeyDown={(e) => handleKeyDown(i, e)} onFocus={(e) => e.target.select()}
-                        className={`w-11 text-center text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all ${d ? "border-[#896558] bg-[#896558]/10" : "border-white/15 focus:border-[#896558]"}`}
-                        style={{ height: "52px" }} aria-label={`Digit ${i + 1}`} />
+                        className={`w-9 sm:w-11 h-12 sm:h-[52px] text-center text-lg sm:text-xl font-bold rounded-xl border bg-white/5 text-white focus:outline-none transition-all ${d ? "border-[#896558] bg-[#896558]/10" : "border-white/15 focus:border-[#896558]"}`}
+                        aria-label={`Digit ${i + 1}`} />
                     ))}
                   </div>
                   <button type="submit" disabled={loading || code.length < 6} className="w-full py-2.5 bg-[#896558] hover:bg-[#6e4e42] disabled:opacity-50 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-2">
@@ -173,7 +173,7 @@ export default function AdminLoginPage({ state, onBack }: { state: AppState; onB
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0e0d] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0f0e0d] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <button onClick={onBack} className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-6 text-sm transition-colors">
           <ArrowLeft size={16} /> Back
@@ -186,7 +186,7 @@ export default function AdminLoginPage({ state, onBack }: { state: AppState; onB
         <h2 className="text-center text-2xl font-bold text-white mb-1">Admin Access</h2>
         <p className="text-center text-sm text-white/30 mb-8">SkillO Platform Control Panel</p>
 
-        <div className="bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl">
+        <div className="bg-white/5 border border-white/10 p-5 sm:p-8 rounded-2xl shadow-xl">
           {error && (
             <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 text-xs">
               <AlertCircle size={15} className="flex-shrink-0" /><span>{error}</span>

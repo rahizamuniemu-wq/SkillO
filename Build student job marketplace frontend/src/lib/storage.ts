@@ -1,15 +1,22 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are required for file uploads.");
+// Lazy-init: do NOT throw at module load time. Throwing on import would crash
+// the entire React tree before it mounts (blank page). Instead, we only fail
+// when an upload is actually attempted and the env vars are missing.
+let _client: ReturnType<typeof createClient> | null = null;
+function getClient() {
+  if (_client) return _client;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are required for file uploads.");
+  }
+  _client = createClient(supabaseUrl, supabaseAnonKey);
+  return _client;
 }
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export async function uploadMaterialFile(file: File) {
+  const supabase = getClient();
   const fileName = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
 
   const { data, error } = await supabase.storage

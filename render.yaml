@@ -1,0 +1,56 @@
+services:
+  # ── Go API backend ──────────────────────────────────────────────────────────
+  - name: skillo-backend
+    type: web
+    runtime: docker
+    dockerfilePath: ./skillo-backend/Dockerfile
+    dockerContext: ./skillo-backend
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: DATABASE_URL
+        sync: false          # Set in Render dashboard — never commit secrets
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRY_HOURS
+        value: "72"
+      - key: EMAIL_PROVIDER
+        value: smtp
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: APP_NAME
+        value: SkillO
+      - key: FRONTEND_URL
+        sync: false          # Set to your Render static site URL, e.g. https://skillo.onrender.com
+      - key: ADMIN_EMAIL
+        value: admin@skillo.app
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+
+  # ── React frontend static site ──────────────────────────────────────────────
+  - name: skillo-frontend
+    type: web
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    rootDir: ./Build student job marketplace frontend
+    plan: free
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false          # Set to your backend URL, e.g. https://skillo-backend.onrender.com

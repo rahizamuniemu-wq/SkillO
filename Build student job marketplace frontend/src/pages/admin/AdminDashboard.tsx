@@ -51,7 +51,7 @@ export default function AdminDashboard({ onLogout }: Props) {
     <div className="min-h-screen bg-[#0f0e0d]">
       {/* Header */}
       <div className="border-b border-white/10 bg-[#1a1210]">
-        <div className="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-[#896558] flex items-center justify-center">
               <Shield size={17} className="text-white" />
@@ -80,7 +80,7 @@ export default function AdminDashboard({ onLogout }: Props) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
         {error && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
             {error}
@@ -128,7 +128,7 @@ export default function AdminDashboard({ onLogout }: Props) {
         {/* Users Table */}
         <div className="bg-[#1a1210] border border-white/10 rounded-2xl overflow-hidden">
           {/* Table header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-6 py-4 border-b border-white/10">
             <button
               onClick={() => setShowUsers(!showUsers)}
               className="flex items-center gap-2 text-white font-semibold text-sm"

@@ -121,13 +121,13 @@ export default function ProfilePage({ state }: { state: AppState }) {
       {/* Hidden file input for avatar upload */}
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarFile} />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-display text-3xl text-[#1a1210] mb-7">My Profile</h1>
+          <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210] mb-7">My Profile</h1>
 
           {/* Profile hero */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8ddd7] shadow-sm mb-5">
-            <div className="flex items-start gap-5">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-5">
               {/* Avatar with upload overlay */}
               <div className="relative flex-shrink-0 group" onClick={handleAvatarClick} style={{ cursor: "pointer" }}>
                 {avatarUrl ? (
@@ -186,7 +186,7 @@ export default function ProfilePage({ state }: { state: AppState }) {
           </div>
 
           {/* Stats row */}
-          <div className="grid grid-cols-3 gap-3 mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
             {[
               { icon: Star,        label: "Skill Points", value: userPoints > 0 ? userPoints.toString() : "—", color: "text-[#896558]" },
               { icon: CheckCircle, label: "Tasks Done",   value: tasksDone.toString(),                         color: "text-emerald-600" },
@@ -243,7 +243,7 @@ export default function ProfilePage({ state }: { state: AppState }) {
           </div>
 
           {/* CV CTA */}
-          <div className="bg-[#1a1210] rounded-2xl p-5 flex items-center justify-between text-white">
+          <div className="bg-[#1a1210] rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-white">
             <div>
               <p className="font-semibold">Build your AI CV</p>
               <p className="text-white/50 text-sm mt-0.5">Complete tasks to earn verified entries &middot; Powered by Gemini AI</p>
@@ -260,9 +260,9 @@ export default function ProfilePage({ state }: { state: AppState }) {
 
       {/* Edit Profile Modal */}
       {editOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setEditOpen(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md border border-[#e8ddd7] z-10">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-[#e8ddd7] z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#f5f0ec]">
               <h2 className="font-semibold text-[#1a1210]">Edit Profile</h2>
               <button onClick={() => setEditOpen(false)} className="w-8 h-8 rounded-lg hover:bg-[#f5f0ec] flex items-center justify-center text-[#7a6560]">
@@ -309,7 +309,7 @@ export default function ProfilePage({ state }: { state: AppState }) {
                   className="w-full px-4 py-2.5 rounded-xl border border-[#e8ddd7] text-sm focus:outline-none focus:border-[#896558] transition-colors"
                   placeholder="e.g. CUET, Dhaka University" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#7a6560] uppercase tracking-wider block mb-1.5">Batch</label>
                   <input type="text" value={tempBatch} onChange={(e) => setTempBatch(e.target.value)}

@@ -19,7 +19,7 @@ export default function JobDetailPage({ state }: { state: AppState }) {
     return (
       <div className="flex min-h-screen bg-[#f8f6f3]">
         <WorkerSidebar state={state} active="worker-dashboard" />
-        <main className="flex-1 flex items-center justify-center p-8">
+        <main className="flex-1 pt-14 lg:pt-0 flex items-center justify-center p-4 sm:p-8">
           <div className="text-center">
             <p className="font-display text-2xl text-[#1a1210] mb-3">Task not found</p>
             <button
@@ -56,7 +56,7 @@ export default function JobDetailPage({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <WorkerSidebar state={state} active="worker-dashboard" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-3xl mx-auto">
           <button
             onClick={() => state.navigate("worker-dashboard")}
@@ -67,7 +67,7 @@ export default function JobDetailPage({ state }: { state: AppState }) {
 
           {/* Header card */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8ddd7] shadow-sm mb-5">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className="text-xs font-semibold text-[#896558] bg-[#ede0d0] px-2 py-0.5 rounded-full">{job.category}</span>
@@ -78,20 +78,20 @@ export default function JobDetailPage({ state }: { state: AppState }) {
                     {job.status}
                   </span>
                 </div>
-                <h1 className="font-display text-3xl text-[#1a1210] mb-1">{job.title}</h1>
+                <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210] mb-1">{job.title}</h1>
                 <p className="text-[#7a6560] text-sm">
                   Posted by <span className="font-semibold text-[#1a1210]">{job.companyName}</span>{job.industry ? <span className="text-[#7a6560]"> · {job.industry}</span> : null}
                 </p>
               </div>
-              <div className="text-right flex-shrink-0">
-                <p className="font-display text-4xl text-[#896558]">Tk {job.reward.toLocaleString()}</p>
+              <div className="text-left sm:text-right flex-shrink-0">
+                <p className="font-display text-3xl sm:text-4xl text-[#896558]">Tk {job.reward.toLocaleString()}</p>
                 <p className="text-xs text-[#7a6560]">winner reward</p>
                 <p className="text-sm font-semibold text-[#896558] mt-1">+{job.points} skill points</p>
                 <p className="text-xs text-[#7a6560]">for valid submissions</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mt-5 pt-5 border-t border-[#f5f0ec]">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5 pt-5 border-t border-[#f5f0ec]">
               <div className="flex items-center gap-2">
                 <Clock size={15} className="text-[#7a6560]" />
                 <div>

@@ -31,7 +31,7 @@ function JobCard({ job, state, openEdit, closeTask, deleteTask }: {
   const pct = job.slots > 0 ? (job.filled / job.slots) * 100 : 0;
   return (
     <div className="bg-white rounded-2xl p-5 border border-[#e8ddd7] hover:border-[#c4a882] hover:shadow-sm transition-all">
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2.5 mb-1 flex-wrap">
             <h3 className="font-semibold text-[#1a1210]">{job.title}</h3>
@@ -40,7 +40,7 @@ function JobCard({ job, state, openEdit, closeTask, deleteTask }: {
             </span>
           </div>
           <p className="text-sm text-[#7a6560] mb-4">{job.category} · Deadline {job.deadline}</p>
-          <div className="flex items-center gap-6 text-sm mb-3">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm mb-3">
             <span><span className="text-[#7a6560]">Slots </span><span className="font-semibold text-[#1a1210]">{job.filled}/{job.slots}</span></span>
             <span><span className="text-[#7a6560]">Reward </span><span className="font-semibold text-[#896558]">Tk {job.reward.toLocaleString()}</span></span>
             <span><span className="text-[#7a6560]">Submissions </span><span className="font-semibold text-[#1a1210]">{pendingReviews}</span></span>
@@ -52,7 +52,7 @@ function JobCard({ job, state, openEdit, closeTask, deleteTask }: {
             <span className="text-xs text-[#7a6560]">{Math.round(pct)}% full</span>
           </div>
         </div>
-        <div className="flex flex-col gap-2 flex-shrink-0">
+        <div className="flex flex-row sm:flex-col flex-wrap gap-2 sm:flex-shrink-0">
           {pendingReviews > 0 && (
             <button
               onClick={() => state.navigate("company-submissions")}
@@ -148,27 +148,27 @@ export default function CompanyDashboard({ state }: { state: AppState }) {
     <div className="flex min-h-screen bg-[#f8f6f3]">
       <CompanySidebar state={state} active="company-dashboard" />
 
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 pt-14 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="max-w-5xl mx-auto">
 
           {/* Header */}
-          <div className="flex items-start justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 sm:mb-8">
             <div>
               <p className="text-xs text-[#7a6560] font-semibold uppercase tracking-wider mb-1">Company Dashboard</p>
-              <h1 className="font-display text-3xl text-[#1a1210]">
+              <h1 className="font-display text-2xl sm:text-3xl text-[#1a1210]">
                 {getGreeting()}, {state.user?.companyName ?? state.user?.firstName ?? "there"}.
               </h1>
             </div>
             <button
               onClick={() => state.navigate("company-create-job")}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#896558] text-white text-sm font-semibold rounded-xl hover:bg-[#5c4039] transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#896558] text-white text-sm font-semibold rounded-xl hover:bg-[#5c4039] transition-colors shadow-sm self-start"
             >
               <Plus size={16} /> Post New Task
             </button>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
             {[
               { label: "Active Tasks",    value: activeTasks.toString(),                                           sub: `${inReviewJobs} in review`, icon: CircleDot, color: "text-emerald-600" },
               { label: "Total Applicants",value: myJobs.reduce((a, j) => a + j.filled, 0).toString(),          sub: "Across all tasks",     icon: Users,  color: "text-[#896558]" },
@@ -177,12 +177,12 @@ export default function CompanyDashboard({ state }: { state: AppState }) {
             ].map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.label} className="bg-white rounded-2xl p-5 border border-[#e8ddd7] shadow-sm">
+                <div key={s.label} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#e8ddd7] shadow-sm">
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs text-[#7a6560] font-medium">{s.label}</p>
                     <Icon size={16} className={s.color} />
                   </div>
-                  <p className="font-display text-3xl text-[#1a1210]">{s.value}</p>
+                  <p className="font-display text-2xl sm:text-3xl text-[#1a1210]">{s.value}</p>
                   <p className="text-xs text-[#7a6560] mt-1">{s.sub}</p>
                 </div>
               );
@@ -191,7 +191,7 @@ export default function CompanyDashboard({ state }: { state: AppState }) {
 
           {/* Banner when tasks have AI-reviewed submissions ready to evaluate */}
           {reviewJob && (
-            <div className="bg-[#1a1210] rounded-2xl p-5 mb-8 flex items-center justify-between gap-4">
+            <div className="bg-[#1a1210] rounded-2xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-xl bg-[#896558]/30 flex items-center justify-center flex-shrink-0">
                   <Sparkles size={20} className="text-[#c4a882]" />
@@ -239,7 +239,7 @@ export default function CompanyDashboard({ state }: { state: AppState }) {
 
       {/* Delete Confirmation Modal */}
       {confirmDeleteJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setConfirmDeleteId(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm border border-[#e8ddd7] z-10 p-6">
             <h2 className="font-semibold text-[#1a1210] mb-2">Delete Task?</h2>
@@ -268,9 +268,9 @@ export default function CompanyDashboard({ state }: { state: AppState }) {
 
       {/* Edit Task Modal */}
       {editJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setEditId(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md border border-[#e8ddd7] z-10">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-[#e8ddd7] z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#f5f0ec]">
               <h2 className="font-semibold text-[#1a1210]">Edit Task</h2>
               <button onClick={() => setEditId(null)} className="w-8 h-8 rounded-lg hover:bg-[#f5f0ec] flex items-center justify-center text-[#7a6560]">
