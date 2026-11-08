@@ -5,13 +5,12 @@ services:
     runtime: docker
     dockerfilePath: ./skillo-backend/Dockerfile
     dockerContext: ./skillo-backend
-    plan: free
     healthCheckPath: /api/health
     envVars:
       - key: PORT
         value: "8080"
       - key: DATABASE_URL
-        sync: false          # Set in Render dashboard — never commit secrets
+        sync: false           # Set in Render dashboard — never commit secrets
       - key: JWT_SECRET
         sync: false
       - key: JWT_EXPIRY_HOURS
@@ -31,7 +30,7 @@ services:
       - key: APP_NAME
         value: SkillO
       - key: FRONTEND_URL
-        sync: false          # Set to your Render static site URL, e.g. https://skillo.onrender.com
+        sync: false           # Set to your Render static site URL, e.g. https://skillo.onrender.com
       - key: ADMIN_EMAIL
         value: admin@skillo.app
       - key: ADMIN_PASSWORD
@@ -46,11 +45,10 @@ services:
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     rootDir: ./Build student job marketplace frontend
-    plan: free
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        sync: false          # Set to your backend URL, e.g. https://skillo-backend.onrender.com
+        sync: false           # Set to your backend URL, e.g. https://skillo-backend.onrender.com
